@@ -36,6 +36,9 @@ function App() {
   const handleCancel = () => {
     setIsExpanded(false);
   };
+  const handleUpdate=(id,updatedNote)=>{
+setNotes(notes.map((n)=>(n.id===id?{...n,...updatedNote}:n)));
+  }
   return (
     <div className="App">
       <h1>My Note Keeper</h1>
@@ -70,7 +73,7 @@ function App() {
         }}
       >
         {notes.map((note) => (
-          <NoteCard key={note.id} note={note} />
+          <NoteCard key={note.id} note={note} onUpdate={handleUpdate} />
         ))}
       </div>
     </div>

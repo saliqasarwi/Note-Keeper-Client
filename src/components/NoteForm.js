@@ -1,17 +1,23 @@
 import {useState} from 'react';
-export default function NoteForm({onSubmit,onCancel}){
-const [title,setTitle]=useState('');
-const [content,setContent]=useState('');
+export default function NoteForm({onSubmit,onCancel,initialNote={title:'',content:''},isEdit=false
+}){
+const [title,setTitle]=useState(initialNote.title||'');
+const [content,setContent]=useState(initialNote.content||'');
 const handleSubmit=()=>{
     if(title.trim()||content.trim()){
         onSubmit({title:title.trim(),content:content.trim()});
     }
+    if(!isEdit){
     setTitle('');
     setContent('');
+    }
+    
 };
 const handleCancel=()=>{
-    setTitle('');
-    setContent('');
+    if(!isEdit){
+        setTitle('');
+        setContent('');
+        }    
     onCancel();
 };
 return(
@@ -21,6 +27,7 @@ backgroundColor:'white',
 padding:'16px',
 borderRadius:'8px',
 boxShadow:'0 1px 4px rgba(0,0,0,0.2)',
+marginBottom:'16px'
 }}>
 <input 
 type="text"
@@ -36,7 +43,7 @@ style={{
 }}
 />
 <textarea
-placeholder='Take a note...'
+placeholder='Write a note...'
 value={content}
 onChange={(e)=>setContent(e.target.value)}
 style={{
