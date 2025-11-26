@@ -3,48 +3,28 @@ import SearchBar from "./components/SearchBar";
 import { useState } from "react";
 import NoteForm from "./components/NoteForm";
 import NoteCard from "./components/NoteCard";
+import useNotes from "./hooks/useNotes";
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
-  const [notes, setNotes] = useState([
-    {
-      id: 1,
-      title: "Learn react",
-      content: "I have learn't  react",
-      createdAt: new Date().toISOString(),
-      color: "#ffab91",
-    },
-    {
-      id: 2,
-      title: "weather",
-      content: "weather is cool",
-      createdAt: new Date().toISOString(),
-      color: "#fff59d",
-    },
-    {
-      id: 3,
-      title: "typescript",
-      content: "I have to learn typescript next",
-      createdAt: new Date().toISOString(),
-      color: "#fff59d",
-    },
-  ]);
+  const {notes,loading,createNote,updateNote,deleteNote}=useNotes(searchQuery);
   const handleSubmit = (note) => {
-    console.log("New note:", note);
+    createNote(note);
     setIsExpanded(false);
   };
   const handleCancel = () => {
     setIsExpanded(false);
   };
-  const handleUpdate=(id,updatedNote)=>{
-setNotes(notes.map((n)=>(n.id===id?{...n,...updatedNote}:n)));
-  }
-  const handleDelete=(id)=>{
-setNotes(notes.filter((n)=>n.id!==id));
-  };
+ 
   return (
     <div className="App">
-      <h1>My Note Keeper</h1>
+      <h1 style={{
+        background: 'linear-gradient(to right, #ff4081,rgb(178, 20, 184))', 
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        padding: '10px',
+        borderRadius: '8px',
+      }}>My Note Keeper</h1>
       <SearchBar
         query={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
@@ -65,9 +45,10 @@ setNotes(notes.filter((n)=>n.id!==id));
             fontSize: "16px",
           }}
         >
-          Take a note...
+          Add a note...
         </div>
       )}
+      {loading?(<p>Loading notes...</p>):(
       <div
         style={{
           display: "grid",
@@ -76,9 +57,9 @@ setNotes(notes.filter((n)=>n.id!==id));
         }}
       >
         {notes.map((note) => (
-          <NoteCard key={note.id} note={note} onUpdate={handleUpdate} onDelete={handleDelete} />
+          <NoteCard key={note.id} note={note} onUpdate={updateNote} onDelete={deleteNote} />
         ))}
-      </div>
+      </div>)}
     </div>
   );
 }

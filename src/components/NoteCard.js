@@ -6,11 +6,11 @@ export default function NoteCard({note,onUpdate,onDelete}){
     const [showDelete,setShowDelete]=useState(false);
     const [isHovered,setIsHovered]=useState(false);
     const handleUpdate=(updatedNote)=>{
-        onUpdate(note.id,updatedNote);
+        onUpdate(note._id,updatedNote);
         setShowEdit(false);
     }
     const handleDelete=()=>{
-        onDelete(note.id);
+        onDelete(note._id);
         setShowDelete(false);
     }
     return(
@@ -20,7 +20,7 @@ export default function NoteCard({note,onUpdate,onDelete}){
         onMouseLeave={(()=>setIsHovered(false))}
         style={{
             position:'relative',
-            backgroundColor:note.color||'#fff59d',
+            backgroundColor:'#E49BA6',
             padding:'12px',
             borderRadius:'4px',
             boxShadow:'0 1px 4px rgba(0,0,0,0.1)',
@@ -53,7 +53,7 @@ export default function NoteCard({note,onUpdate,onDelete}){
                 color:'#5f6368'
             }}
             >
-                delete
+                🗑️
             </button>
         )
         }
