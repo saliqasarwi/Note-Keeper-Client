@@ -1,15 +1,25 @@
 import {useState} from 'react';
 import NoteForm from './NoteForm';
-export default function NoteCard({note,onUpdate}){
+import DeleteDialog from './DeleteDialog';
+export default function NoteCard({note,onUpdate,onDelete}){
     const [showEdit,setShowEdit]=useState(false);
+    const [showDelete,setShowDelete]=useState(false);
+    const [isHovered,setIsHovered]=useState(false);
     const handleUpdate=(updatedNote)=>{
         onUpdate(note.id,updatedNote);
         setShowEdit(false);
     }
+    const handleDelete=()=>{
+        onDelete(note.id);
+        setShowDelete(false);
+    }
     return(
   <>
         <div onClick={()=>setShowEdit(true)}
+        onMouseEnter={()=>setIsHovered(true)}
+        onMouseLeave={(()=>setIsHovered(false))}
         style={{
+            position:'relative',
             backgroundColor:note.color||'#fff59d',
             padding:'12px',
             borderRadius:'4px',
@@ -25,6 +35,28 @@ export default function NoteCard({note,onUpdate}){
           {new Date(note.createdAt).toLocaleDateString()}
 
         </small>
+        {isHovered&&
+        (
+            <button
+            onClick={(e)=>{
+                e.stopPropagation();
+                setShowDelete(true);
+            }}
+            style={{
+                position:'absolute',
+                bottom:'0px',
+                right:'0px',
+                background:'none',
+                border:'none',
+                cursor:'pointer',
+                fontSize:'18px',
+                color:'#5f6368'
+            }}
+            >
+                delete
+            </button>
+        )
+        }
         </div>
         {
             showEdit&&(
@@ -63,6 +95,14 @@ export default function NoteCard({note,onUpdate}){
                </div>
 
                 </div>
+            )
+        }
+        {
+            showDelete&&(
+                <DeleteDialog
+                onConfirm={handleDelete}
+                onCancel={()=>setShowDelete(false)}
+                />
             )
         }
   </>

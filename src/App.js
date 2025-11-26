@@ -39,6 +39,9 @@ function App() {
   const handleUpdate=(id,updatedNote)=>{
 setNotes(notes.map((n)=>(n.id===id?{...n,...updatedNote}:n)));
   }
+  const handleDelete=(id)=>{
+setNotes(notes.filter((n)=>n.id!==id));
+  };
   return (
     <div className="App">
       <h1>My Note Keeper</h1>
@@ -73,7 +76,7 @@ setNotes(notes.map((n)=>(n.id===id?{...n,...updatedNote}:n)));
         }}
       >
         {notes.map((note) => (
-          <NoteCard key={note.id} note={note} onUpdate={handleUpdate} />
+          <NoteCard key={note.id} note={note} onUpdate={handleUpdate} onDelete={handleDelete} />
         ))}
       </div>
     </div>
